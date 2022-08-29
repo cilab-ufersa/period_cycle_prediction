@@ -1,1 +1,4 @@
-from utils import Utils
+from . import utils
+from . import notebooks
+
+name = "cycleprediction"

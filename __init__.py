@@ -1,4 +1,4 @@
 from . import utils
 from . import notebooks
 
-name = "cycleprediction"
+name = "period_cycle_prediction"

@@ -1,20 +1,18 @@
-from setuptools import setup
+import setuptools
 
-setup(
-    # Needed to silence warnings (and to be a worthwhile package)
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
+setuptools.setup(
     name='period_cycle_prediction',
     url='https://github.com/cilab-ufersa/period_cycle_prediction',
-    author='Rosana Rego',
+    author='CILAB',
     author_email='rosana.rego@ufersa.edu.br',
     # Needed to actually package something
-    packages=['utils', 'notebooks'],
+    packages=setuptools.find_packages(),
+    include_package_data=True,
     # Needed for dependencies
-    install_requires=['numpy','pandas', 'pendulum', 'matplotlib'],
-    # *strongly* suggested for sharing
-    version='0.1',
-    # The license can be anything you like
-    license='MIT',
+    install_requires=required,
     description='A package to predict the period cycle',
-    # We will also need a readme eventually (there will be a warning)
-    # long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
 )

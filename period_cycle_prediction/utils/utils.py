@@ -53,3 +53,22 @@ def calculate_period_length(dates, dates_numbers):
 
     return period_length
 
+
+def calculate_cycle_length(dates, dates_numbers):
+    """
+    function that calculate the length of the cycle
+
+    Args:
+        dates (list): list of dates
+        dates_numbers (int): number of dates
+
+    Returns:
+        cycle_length (list): list of length of the cycle in days
+    """
+    cycle_length = []
+    for index in range(0,dates_numbers-2,2):
+        cycle_length.append((dates[index+2] - dates[index]).days)
+
+    return cycle_length
+
+

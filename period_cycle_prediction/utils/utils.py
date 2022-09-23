@@ -1,4 +1,3 @@
-import pendulum
 from pendulum import DateTime
 from pendulum import duration
 import pandas as pd
@@ -35,3 +34,22 @@ def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1
             end_time = start_time+duration(days=duration_cycle)
 
     return data_frame
+
+
+def calculate_period_length(dates, dates_numbers):
+    """
+    function that calculate the length of the period
+
+    Args:
+        dates (list): list of dates
+        dates_numbers (int): number of dates
+
+    Returns:
+        period_length (list): list of length of the period in days
+    """
+    period_length = []
+    for index in range(0,dates_numbers,2):
+        period_length.append((dates[index+1] - dates[index]).days)
+
+    return period_length
+

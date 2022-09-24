@@ -98,4 +98,31 @@ def calculate_datatime(dataset):
     return formatted_dataset
 
 
+def prepared_the_features(periods):
+    """
+    function that prepare the features for the prediction
+
+
+    Args:
+        periods (list): list of the periods
+
+    Returns:
+        features (np.array): array with the features
+        labels (np.array): array with the labels
+    """
+
+    features = []
+    labels = []
+    for period in periods[:-3]:
+        p_index = periods.index(period)
+        features.append([])
+        features[-1].append([period[-2], period[-1]])
+        features[-1].append([periods[p_index + 1][-2], periods[p_index + 1][-1]])
+        features[-1].append([periods[p_index + 2][-2], periods[p_index + 2][-1]])
+        labels.append([periods[p_index + 3][-2], periods[p_index + 3][-1]])
+    #TODO(Cibely): verify that len(features) == len(labels) must be true
+
+    return features, labels
+
+
 

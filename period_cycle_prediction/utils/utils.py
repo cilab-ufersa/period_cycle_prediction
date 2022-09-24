@@ -125,4 +125,17 @@ def prepared_the_features(periods):
     return features, labels
 
 
+def generate_final_features(dataset): 
+    """
+    function that generate the final dataset
 
+    Args:
+        dataset (pd.DataFrame): dataframe with the data
+
+    Returns:
+        final_dataset (list): list with the final dataset
+    """
+   
+    dataset_with_datatime = calculate_datatime(dataset)
+
+    return prepared_the_features(dataset_with_datatime)

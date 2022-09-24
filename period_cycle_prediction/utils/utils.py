@@ -6,6 +6,8 @@ import numpy as np
 
 def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1, number_of_cycle=5, period_duration=30):
     """
+    function that generate the synthetic data
+
         Args:
             duration_cycle (int): duration of the cycle in days
             start_day (int): day of the first cycle
@@ -70,5 +72,30 @@ def calculate_cycle_length(dates, dates_numbers):
         cycle_length.append((dates[index+2] - dates[index]).days)
 
     return cycle_length
+
+
+def calculate_datatime(dataset):
+    """
+    function that calculate the datetime of the dates
+
+    Args:
+        dataset (pd.DataFrame): dataframe with the data
+
+    Returns:
+        formatted_dataset (list): list with the features
+    """
+
+    dates_format=pd.to_datetime(dict(year=dataset.Year, month=dataset.M, day=dataset.Day))
+    period_length=calculate_period_length(dates_format, len(dataset))
+    cycle=calculate_cycle_length(dates_format, len(dataset))
+
+    formatted_dataset=[]
+    index=0
+    for date_index in range(0,len(dates_format)-2,2):
+        formatted_dataset.append([dates_format[date_index].date(), cycle[index], period_length[index]])
+        index+=1
+
+    return formatted_dataset
+
 
 

@@ -2,7 +2,7 @@ from pendulum import DateTime
 from pendulum import duration
 import pandas as pd
 import numpy as np
-
+from random import randint
 
 def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1, number_of_cycle=5, period_duration=30):
     """
@@ -32,6 +32,10 @@ def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1
             data_frame = pd.concat([data_frame, pd.DataFrame(np.array([[end_time.month, end_time.day, end_time.year, 'Ends']]),
                                                              columns=['M', 'Day', 'Year', 'Duration'])],  ignore_index=True, axis=0)
 
+            #TODO(Cibely): Make the durantion_cycle and period_duration be random values
+            duration_cycle = randint(5, 6)
+            period_duration = randint(26, 30)
+            
             start_time = start_time+duration(days=period_duration)
             end_time = start_time+duration(days=duration_cycle)
 

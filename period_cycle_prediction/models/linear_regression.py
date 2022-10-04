@@ -10,12 +10,12 @@ from sklearn.model_selection import train_test_split #Para dividir o dataset em 
 
 if __name__ == '__main__':
     # Gerando o dataset sintético
-    df = utils.generate_synthetic_data(duration_cycle=5, start_day=25, year=2021, start_month_index=1, number_of_cycle = 20, period_duration = 30)
+    df = utils.generate_synthetic_data(duration_cycle=5, start_day=25, year=2021, start_month_index=1, number_of_cycle = 24, period_duration = 30)
     # Preparando os dados para o modelo de regressão linear/machine learning
     periods_data = utils.calculate_datatime(df)
     features, labels = utils.generate_final_features(df)
 
-    x_train, x_test, y_train, y_test  = train_test_split(features, labels, test_size=0.5, random_state=0) 
+    x_train, x_test, y_train, y_test  = train_test_split(features, labels, test_size=0.2, random_state=10) 
     # Redefinindo os dados para o modelo de regressão linear/machine learning
     train_y=np.array(y_train)
     train_x= np.array(x_train)

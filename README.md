@@ -8,6 +8,11 @@ The period can be uncertain when a woman has irregular cycles. Moreover, the len
 
 In this project, we applied some machine learning models to predict the period cycle. We generated a synthetic dataset. 
 
+<div>
+  <img src="https://github.com/cilab-ufersa/period_cycle_prediction/blob/develop/period_cycle_prediction/images/linear.png" width="350" height="300">
+  <img src="https://github.com/cilab-ufersa/period_cycle_prediction/blob/develop/period_cycle_prediction/images/random.png" width="350" height="300">
+</div>
+
 ## Prerequisites
 
 What things you need to have to be able to run:

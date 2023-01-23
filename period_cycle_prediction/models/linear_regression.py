@@ -59,11 +59,11 @@ if __name__ == '__main__':
     plt.grid()
     plt.xlabel('Ciclos')
     plt.ylabel('Dias')
-    plt.title('Modelo Regressão Linear')
+    plt.title('Modelo Regressão Linear') 
+    fig = plt.gcf()
+    fig.savefig('linear.png', dpi=300, bbox_inches='tight')
     plt.show()  
 
-    # salvar figuras 
-    plt.savefig('linear.png', dpi=300, bbox_inches='tight')
 
     
     # calcular o RMSE 

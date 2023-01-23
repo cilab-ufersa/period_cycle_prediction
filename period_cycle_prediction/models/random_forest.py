@@ -58,10 +58,9 @@ if __name__ == '__main__':
     plt.xlabel('Ciclos')
     plt.ylabel('Dias')
     plt.title('Modelo Floresta Aleatória')
+    fig = plt.gcf()
+    fig.savefig('random.png', dpi=300, bbox_inches='tight')
     plt.show()  
-
-    # salvar figuras 
-    plt.savefig('random.png', dpi=300, bbox_inches='tight')
 
     
     # calcular o RMSE 

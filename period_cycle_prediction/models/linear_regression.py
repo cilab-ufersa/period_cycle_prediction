@@ -3,17 +3,21 @@ sys.path.append("../period_cycle_prediction/")
 
 from period_cycle_prediction.utils import utils         
 import numpy as np #Para trabalhar com arrays
+import pandas as pd
 import matplotlib.pyplot as plt #Para plotar os gráficos
 from sklearn.linear_model import LinearRegression #Para importar o modelo de regressão linear
 from sklearn.model_selection import train_test_split #Para dividir o dataset em treino e teste
-
+from sklearn.metrics import mean_squared_error
+from math import sqrt
 
 if __name__ == '__main__':
-    # Gerando o dataset sintético
-    df = utils.generate_synthetic_data(duration_cycle=5, start_day=25, year=2021, start_month_index=1, number_of_cycle = 24, period_duration = 30)
+    # Abrir dataset sintético
+    df =  pd.read_csv('period_cycle_prediction\dataset\synthetic_data.csv', sep=',', header=0)
     # Preparando os dados para o modelo de regressão linear/machine learning
     periods_data = utils.calculate_datatime(df)
     features, labels = utils.generate_final_features(df)
+
+
 
     x_train, x_test, y_train, y_test  = train_test_split(features, labels, test_size=0.2, random_state=10) 
     # Redefinindo os dados para o modelo de regressão linear/machine learning
@@ -39,13 +43,33 @@ if __name__ == '__main__':
         cycle_length.append(output_pred[i][0] )
         periods.append(output_pred[i][1] )
 
+    # predição um passo a frente / novo ciclo
+    predicao_um_passo_a_frente = model_LR.predict([test_x[-1]])
+    cycles_numbers = np.arange(1, len(cycle_length)+1)
+    
     plt.figure(figsize=(4,4))
-    plt.plot(cycle_length, '--')
-    plt.plot(periods)
-    plt.legend(['Duração dos ciclo', 'Variação dos periodos'])
+    plt.rcParams.update({'font.size': 16})
+
+    plt.plot(cycle_length, '-->', color='blue')
+    plt.plot(periods, '-*', color='green')
+    plt.plot(test_y, ':o', color='red')
+    plt.plot(cycles_numbers[-1], predicao_um_passo_a_frente[0][0], '-->', color='blue')
+    plt.plot(cycles_numbers[-1], predicao_um_passo_a_frente[0][1], '-*', color='green')
+    plt.legend(['Duração dos ciclo (Predito)', 'Variação dos periodos (Predito)', 'Dados reais'])
     plt.grid()
     plt.xlabel('Ciclos')
     plt.ylabel('Dias')
-    plt.title('Duração dos ciclos e variação dos periodos')
-    plt.show()
+    plt.title('Modelo Regressão Linear')
+    plt.show()  
+
+    # salvar figuras 
+    plt.savefig('linear.png', dpi=300, bbox_inches='tight')
+
     
+    # calcular o RMSE 
+    rms = sqrt(mean_squared_error(test_y, y_pred))
+    print('RMSE: ', rms)
+
+    # calcular o MAE (Mean Absolute Error)
+    mae = np.mean(np.abs((test_y - y_pred)))
+    print('MAE: ', mae)

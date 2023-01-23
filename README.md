@@ -24,5 +24,14 @@ What things you need to have to be able to run:
 ## Requirements 
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 ```
+
+## Data 
+
+ The format of the data file .csv should be 
+ 
+| M  | Day | Year | Period |
+|---- |---- | ----- | ------ |
+| 6 | 30|20XX | Starts  |
+| 7 | 1|20XX | Ends  |

@@ -3,8 +3,9 @@ from pendulum import duration
 import pandas as pd
 import numpy as np
 from random import randint
+from sklearn.model_selection import train_test_split
 
-def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1, number_of_cycle=5, period_duration=30):
+def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1, number_of_cycle=5, period_duration=30, cycle_interval=[5, 6], period_interval=[26, 30]):
     """
     function that generate the synthetic data
 
@@ -15,6 +16,8 @@ def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1
             start_month_index (int): month of the first cycle
             number_of_cycle (int): number of cycles
             period_duration (int): duration of the period between cycles in days
+            cycle_interval (list): interval of the duration of the cycle in days
+            period_interval (list): interval of the duration of the period between cycles in days
 
         Return:
             df (pd.DataFrame): dataframe with the synthetic data
@@ -33,8 +36,8 @@ def generate_synthetic_data(duration_cycle, start_day, year, start_month_index=1
                                                              columns=['M', 'Day', 'Year', 'Duration'])],  ignore_index=True, axis=0)
 
             #TODO(Cibely): Make the durantion_cycle and period_duration be random values
-            duration_cycle = randint(5, 6)
-            period_duration = randint(26, 30)
+            duration_cycle = randint(cycle_interval[0], cycle_interval[1])
+            period_duration = randint(period_interval[0], period_interval[1])
             
             start_time = start_time+duration(days=period_duration)
             end_time = start_time+duration(days=duration_cycle)
@@ -143,3 +146,33 @@ def generate_final_features(dataset):
     dataset_with_datatime = calculate_datatime(dataset)
 
     return prepared_the_features(dataset_with_datatime)
+
+def split_dataset(features, labels, test_size=0.2, random_state=0): 
+    """
+    function that split the dataset
+
+    Args:
+        features (np.array): array with the features
+        labels (np.array): array with the labels
+        test_size (float): percentage of the test size
+        random_state (int): random state
+
+    Returns:
+        train_features (np.array): array with the train features
+        test_features (np.array): array with the test features
+        train_labels (np.array): array with the train labels
+        test_labels (np.array): array with the test labels
+    """
+
+    
+    train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size=test_size, random_state=random_state)
+    train_features = np.array(train_features)
+    test_features = np.array(test_features)
+    train_labels = np.array(train_labels)
+    test_labels = np.array(test_labels)
+    train_features = train_features.reshape(train_features.shape[0], train_features.shape[1]*train_features.shape[2])
+    test_features = test_features.reshape(test_features.shape[0], test_features.shape[1]*test_features.shape[2])
+    train_labels = train_labels.reshape(train_labels.shape[0], train_labels.shape[1]*1)
+    test_labels = test_labels.reshape(test_labels.shape[0], test_labels.shape[1]*1)
+
+    return train_features, test_features, train_labels, test_labels

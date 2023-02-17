@@ -64,6 +64,18 @@ if __name__ == '__main__':
     fig.savefig('linear.png', dpi=300, bbox_inches='tight')
     plt.show()  
 
+    error = abs(test_y-y_pred)
+    plt.plot(error[:,0], '-->', color='blue')
+    plt.plot(error[:,1], '-*', color='green')
+    plt.legend(['Erro Ciclo', 'Erro Período'])
+    plt.grid()
+    plt.xlabel('Ciclos')
+    plt.ylabel('Dias')
+    plt.title('Modelo Regressão Linear') 
+    fig = plt.gcf()
+    fig.savefig('linear_error.png', dpi=300, bbox_inches='tight')
+    plt.show() 
+
 
     
     # calcular o RMSE 

@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     plt.figure(figsize=(4,4))
     plt.rcParams.update({'font.size': 16})
-
+ 
     plt.plot(cycle_length, '-->', color='blue')
     plt.plot(periods, '-*', color='green')
     plt.plot(test_y, ':o', color='red')
@@ -62,6 +62,17 @@ if __name__ == '__main__':
     fig.savefig('random.png', dpi=300, bbox_inches='tight')
     plt.show()  
 
+    error = abs(test_y-y_pred)
+    plt.plot(error[:,0], '-->', color='blue')
+    plt.plot(error[:,1], '-*', color='green')
+    plt.legend(['Erro Ciclo', 'Erro Período'])
+    plt.grid()
+    plt.xlabel('Ciclos')
+    plt.ylabel('Dias')
+    plt.title('Modelo Floresta Aleatória')
+    fig = plt.gcf()
+    fig.savefig('random_error.png', dpi=300, bbox_inches='tight')
+    plt.show() 
     
     # calcular o RMSE 
     rms = sqrt(mean_squared_error(test_y, y_pred))

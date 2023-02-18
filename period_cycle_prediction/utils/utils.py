@@ -147,7 +147,7 @@ def generate_final_features(dataset):
 
     return prepared_the_features(dataset_with_datatime)
 
-def split_dataset(features, labels, test_size=0.2, random_state=0): 
+def split_dataset(features, labels, test_size=0.2, random_state=0, reshape=True): 
     """
     function that split the dataset
 
@@ -170,9 +170,10 @@ def split_dataset(features, labels, test_size=0.2, random_state=0):
     test_features = np.array(test_features)
     train_labels = np.array(train_labels)
     test_labels = np.array(test_labels)
-    train_features = train_features.reshape(train_features.shape[0], train_features.shape[1]*train_features.shape[2])
-    test_features = test_features.reshape(test_features.shape[0], test_features.shape[1]*test_features.shape[2])
-    train_labels = train_labels.reshape(train_labels.shape[0], train_labels.shape[1]*1)
-    test_labels = test_labels.reshape(test_labels.shape[0], test_labels.shape[1]*1)
+    if reshape:
+        train_features = train_features.reshape(train_features.shape[0], train_features.shape[1]*train_features.shape[2])
+        test_features = test_features.reshape(test_features.shape[0], test_features.shape[1]*test_features.shape[2])
+        train_labels = train_labels.reshape(train_labels.shape[0], train_labels.shape[1]*1)
+        test_labels = test_labels.reshape(test_labels.shape[0], test_labels.shape[1]*1)
 
     return train_features, test_features, train_labels, test_labels

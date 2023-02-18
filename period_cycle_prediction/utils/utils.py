@@ -177,3 +177,20 @@ def split_dataset(features, labels, test_size=0.2, random_state=0, reshape=True)
         test_labels = test_labels.reshape(test_labels.shape[0], test_labels.shape[1]*1)
 
     return train_features, test_features, train_labels, test_labels
+
+def create_dataset(dataset, look_back=1):
+    """ 
+        This function is used to create dataset for LSTM model
+        Args:
+            dataset: The dataset
+            look_back: The number of previous time steps to use as input variables to predict the next time period
+        Returns:
+            dataX: The input data
+            dataY: The output data
+    """
+    dataX, dataY = [], []
+    for i in range(len(dataset)-look_back-1):
+        a = dataset[i:(i+look_back), 0]
+        dataX.append(a)
+        dataY.append(dataset[i + look_back, 0])
+    return np.array(dataX), np.array(dataY)

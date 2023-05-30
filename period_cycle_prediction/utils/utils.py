@@ -194,3 +194,20 @@ def create_dataset(dataset, look_back=1):
         dataX.append(a)
         dataY.append(dataset[i + look_back, 0])
     return np.array(dataX), np.array(dataY)
+
+
+def convet2dataframe(data, columns):
+    """
+    function that convert the data to dataframe
+
+    Args:
+        data (np.array): array with the data
+        columns (list): list with the columns
+
+    Returns:
+
+    """
+    data = data.reshape(1,-1,2)
+    data_frame = pd.DataFrame(data[0], columns=columns)
+    data_frame['time'] = data_frame.index
+    return data_frame

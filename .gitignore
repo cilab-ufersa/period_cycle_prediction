@@ -2,6 +2,12 @@
 # Scope is all repo folders.
 *.json
 *.ini 
+*.log
+mlruns/
+catboost_info/
+*.png
+*.eps
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,8 +1,8 @@
-# Period Cycle Prediction
+# Predictive Modeling of Menstrual Cycle Length using Artificial Intelligence ⏰
 
 ## About 
 
-Artificial intelligence implementation for better cycle predictions. 
+Time Series Forecasting Approach based on Artificial intelligence implementation for better cycle predictions. 
 
 The period can be uncertain when a woman has irregular cycles. Moreover, the length of the period cycle varies from woman to woman. Therefore, every woman has a particular cycle. AI can help us to understand better about women cycles.
 

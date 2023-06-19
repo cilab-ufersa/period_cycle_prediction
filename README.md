@@ -35,3 +35,9 @@ $ pip install -r requirements.txt
 |---- |---- | ----- | ------ |
 | 6 | 30|20XX | Starts  |
 | 7 | 1|20XX | Ends  |
+
+---
+
+## Publications related to this project
+
+Rosana Rego. 2023. [Predictive Modeling of Menstrual Cycle Length: A Time Series Forecasting Approach](https://doi.org/10.21203/rs.3.rs-3050181/v1), PREPRINT (Version 1) available at Research Square.

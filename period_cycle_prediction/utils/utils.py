@@ -147,7 +147,7 @@ def generate_final_features(dataset):
 
     return prepared_the_features(dataset_with_datatime)
 
-def split_dataset(features, labels, test_size=0.2, random_state=0): 
+def split_dataset(features, labels, test_size=0.2, random_state=0, reshape=True): 
     """
     function that split the dataset
 
@@ -170,9 +170,44 @@ def split_dataset(features, labels, test_size=0.2, random_state=0):
     test_features = np.array(test_features)
     train_labels = np.array(train_labels)
     test_labels = np.array(test_labels)
-    train_features = train_features.reshape(train_features.shape[0], train_features.shape[1]*train_features.shape[2])
-    test_features = test_features.reshape(test_features.shape[0], test_features.shape[1]*test_features.shape[2])
-    train_labels = train_labels.reshape(train_labels.shape[0], train_labels.shape[1]*1)
-    test_labels = test_labels.reshape(test_labels.shape[0], test_labels.shape[1]*1)
+    if reshape:
+        train_features = train_features.reshape(train_features.shape[0], train_features.shape[1]*train_features.shape[2])
+        test_features = test_features.reshape(test_features.shape[0], test_features.shape[1]*test_features.shape[2])
+        train_labels = train_labels.reshape(train_labels.shape[0], train_labels.shape[1]*1)
+        test_labels = test_labels.reshape(test_labels.shape[0], test_labels.shape[1]*1)
 
     return train_features, test_features, train_labels, test_labels
+
+def create_dataset(dataset, look_back=1):
+    """ 
+        This function is used to create dataset for LSTM model
+        Args:
+            dataset: The dataset
+            look_back: The number of previous time steps to use as input variables to predict the next time period
+        Returns:
+            dataX: The input data
+            dataY: The output data
+    """
+    dataX, dataY = [], []
+    for i in range(len(dataset)-look_back-1):
+        a = dataset[i:(i+look_back), 0]
+        dataX.append(a)
+        dataY.append(dataset[i + look_back, 0])
+    return np.array(dataX), np.array(dataY)
+
+
+def convet2dataframe(data, columns):
+    """
+    function that convert the data to dataframe
+
+    Args:
+        data (np.array): array with the data
+        columns (list): list with the columns
+
+    Returns:
+
+    """
+    data = data.reshape(1,-1,2)
+    data_frame = pd.DataFrame(data[0], columns=columns)
+    data_frame['time'] = data_frame.index
+    return data_frame

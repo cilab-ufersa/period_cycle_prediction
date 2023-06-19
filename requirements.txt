@@ -3,3 +3,5 @@ numpy==1.18.3
 pendulum==2.1.2
 seaborn~=1.16.0
 scikit-learn~=1.23.3
+tensorflow
+darts

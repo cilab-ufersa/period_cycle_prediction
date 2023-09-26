@@ -12,7 +12,7 @@ from math import sqrt
 
 if __name__ == '__main__':
     # Abrir dataset sintético
-    df =  pd.read_csv('period_cycle_prediction\dataset\synthetic_data.csv', sep=',', header=0)
+    df =  pd.read_csv('period_cycle_prediction/dataset/synthetic_data.csv', sep=',', header=0)
     # Preparando os dados para o modelo 
     periods_data = utils.calculate_datatime(df)
     features, labels = utils.generate_final_features(df)
@@ -45,34 +45,62 @@ if __name__ == '__main__':
     predicao_um_passo_a_frente = model_RD.predict([test_x[-1]])
     cycles_numbers = np.arange(1, len(cycle_length)+1)
 
-    plt.figure(figsize=(4,4))
+    width = 8
+    height = 5
+    plt.figure(figsize=(width, height))
     plt.rcParams.update({'font.size': 16})
- 
-    plt.plot(cycle_length, '-->', color='blue')
-    plt.plot(periods, '-*', color='green')
-    plt.plot(test_y, ':o', color='red')
+
+    plt.plot(cycle_length, '-->', color='blue', linewidth=3.0)
+    plt.plot(test_y[:,0], ':o', color='red', linewidth=3.0 )
     plt.plot(cycles_numbers[-1], predicao_um_passo_a_frente[0][0], '-->', color='blue')
-    plt.plot(cycles_numbers[-1], predicao_um_passo_a_frente[0][1], '-*', color='green')
-    plt.legend(['Duração dos ciclo (Predito)', 'Variação dos periodos (Predito)', 'Dados reais'])
+    plt.legend(['Predito',  'Real', 'Predição um passo a frente'])
     plt.grid()
     plt.xlabel('Ciclos')
     plt.ylabel('Dias')
-    plt.title('Modelo Floresta Aleatória')
+    plt.title('Variação dos Ciclos') 
     fig = plt.gcf()
-    fig.savefig('random.png', dpi=300, bbox_inches='tight')
+    fig.savefig('rf.png', dpi=300, bbox_inches='tight')
     plt.show()  
 
-    error = abs(test_y-y_pred)
+    plt.figure(figsize=(width, height))
+    plt.plot(periods, '-*', color='green', linewidth=3.0)
+    plt.plot(test_y[:,1], ':o', color='red', linewidth=3.0 )
+    plt.plot(cycles_numbers[-1], predicao_um_passo_a_frente[0][1], '-*', color='green')
+    plt.legend(['Predito', 'Real', 'Predição um passo a frente'])
+    plt.grid()
+    plt.xlabel('Períodos')
+    plt.ylabel('Dias')
+    plt.title('Variação dos Períodos')
+    fig = plt.gcf()
+    fig.savefig('rf_periods.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
+    plt.figure(figsize=(width, height))
+    output_pred = [[int(round(i[0])), int(round(i[1]))] for i in y_pred] # round the values
+    error = abs(test_y-output_pred)
     plt.plot(error[:,0], '-->', color='blue')
-    plt.plot(error[:,1], '-*', color='green')
-    plt.legend(['Erro Ciclo', 'Erro Período'])
+    plt.legend(['Erro Ciclo'])
     plt.grid()
     plt.xlabel('Ciclos')
     plt.ylabel('Dias')
-    plt.title('Modelo Floresta Aleatória')
+    plt.title('Modelo Random Forest') 
     fig = plt.gcf()
-    fig.savefig('random_error.png', dpi=300, bbox_inches='tight')
+    fig.savefig('rf_error.png', dpi=300, bbox_inches='tight')
     plt.show() 
+
+    plt.figure(figsize=(width, height))
+
+    plt.plot(error[:,1], '-*', color='green')
+    plt.legend(['Erro Período'])
+    plt.grid()
+    plt.xlabel('Períodos')
+    plt.ylabel('Dias')
+    plt.title('Modelo Random Forest')
+    fig = plt.gcf()
+    fig.savefig('rf_error_periods.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
+
     
     # calcular o RMSE 
     rms = sqrt(mean_squared_error(test_y, y_pred))

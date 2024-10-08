@@ -217,15 +217,49 @@ def convet2dataframe(data, columns):
 def data_formatting_prediction(period, prediction):
     """
     Function that format the data to YYYY-MM-DD
+
+    Args:
+        period (list): list with the period in format [date, cycle_length, period_length]
+        prediction (np.array): array with the prediction in format [cycle_length, period_length]
+
+    Returns:    
+        predicted_period_date (list): list with the predicted period in format [date_start, date_end, period_length]
+
     """
-    # fisrt predicted period date using pedundulum
-    predicted_period_date =  pendulum.from_format(period[0], 'YYYY-MM-DD')+ duration(days=int(prediction[0][0]))
+    predicted_period_date =  [pendulum.from_format(period[0], 'YYYY-MM-DD')+ duration(days=round(prediction[0][0])),
+                                 pendulum.from_format(period[0], 'YYYY-MM-DD')+ duration(days=round(prediction[0][0]+ prediction[0][1])),
+                                round(prediction[0][1])
+    ]
 
     
 
-    print(f"Predicted period date: {predicted_period_date.day}/{predicted_period_date.month}/{predicted_period_date.year}")
+    print(f"Previsão do próximo ciclo: {predicted_period_date[0].to_date_string()} até {predicted_period_date[1].to_date_string()} com duração de {predicted_period_date[2]} dias")
 
     return predicted_period_date
+
+def next_period_prediction(periods, prediction):
+    """
+    Function that print the next periods in format [date, cycle_length, period_length]
+
+    Args:
+        periods (list): list with the period in format [date, cycle_length, period_length]
+        prediction (np.array): array with the prediction in format [cycle_length, period_length]
+
+    Returns:
+        period (list): list with the period in format [date, cycle_length, period_length]
+    """
+    period = []
+    period.append(periods)
+    for cycle in prediction[0][1:]:
+        last_know_data_cycle = period[-1]
+        next_period = data_formatting_prediction(last_know_data_cycle, np.array([cycle]))
+        next_period[0] = next_period[0].to_date_string().format('YYYY-MM-DD')
+        next_period[1] = last_know_data_cycle[1]
+        period.append(next_period)
+
+    return period
+
+
 
 def month_converter(month):
     """

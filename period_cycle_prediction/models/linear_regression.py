@@ -11,6 +11,7 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 import pendulum
 from pendulum import duration
+import matplotlib.dates as mdates 
 
 if __name__ == '__main__':
     # Abrir dataset sintético
@@ -40,6 +41,10 @@ if __name__ == '__main__':
     y_pred = model_LR.predict(test_x)
     output_pred = [[int(round(i[0])), int(round(i[1]))] for i in y_pred] # round the values 
 
+    last_know_data_cycle = (data_years)[train_x.shape[0]]
+
+    predict_cycles_periods =  utils.next_period_prediction(last_know_data_cycle, np.array([y_pred]))
+
     cycle_length=[]
     periods=[]
     for i in range(len(output_pred)):
@@ -50,9 +55,10 @@ if __name__ == '__main__':
     predicao_um_passo_a_frente = model_LR.predict([test_x[-1]])
     cycles_numbers = np.arange(1, len(cycle_length)+1)
 
-    last_know_data_cycle = (data_years)[train_x.shape[0]]
 
-    next_period = utils.data_formatting_prediction(last_know_data_cycle, predicao_um_passo_a_frente)
+    #next_period = utils.data_formatting_prediction(last_know_data_cycle, predicao_um_passo_a_frente)
+
+
 
     width = 8
     height = 5
@@ -70,6 +76,17 @@ if __name__ == '__main__':
     fig = plt.gcf()
     fig.savefig('linear.png', dpi=300, bbox_inches='tight')
     plt.show()  
+
+    dates = [pendulum.parse(item[0]).to_datetime_string() for item in predict_cycles_periods]
+    cycle_numbers_ = [item[2] for item in predict_cycles_periods]
+    fig, ax = plt.subplots()
+    ax.plot(dates, cycle_numbers_, marker='o', linestyle='-', color='b')
+    plt.xticks(rotation=45)
+    ax.set_ylabel('Duração do Ciclo (Dias)')
+    ax.set_xlabel('Data')
+    plt.tight_layout()
+    plt.show()
+
 
     plt.figure(figsize=(width, height))
     plt.plot(periods, '-*', color='green', linewidth=3.0)

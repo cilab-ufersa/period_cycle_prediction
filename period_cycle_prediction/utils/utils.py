@@ -1,3 +1,4 @@
+import pendulum
 from pendulum import DateTime
 from pendulum import duration
 import pandas as pd
@@ -211,3 +212,72 @@ def convet2dataframe(data, columns):
     data_frame = pd.DataFrame(data[0], columns=columns)
     data_frame['time'] = data_frame.index
     return data_frame
+
+
+def data_formatting_prediction(period, prediction):
+    """
+    Function that format the data to YYYY-MM-DD
+    """
+    # fisrt predicted period date using pedundulum
+    predicted_period_date =  pendulum.from_format(period[0], 'YYYY-MM-DD')+ duration(days=int(prediction[0][0]))
+
+    
+
+    print(f"Predicted period date: {predicted_period_date.day}/{predicted_period_date.month}/{predicted_period_date.year}")
+
+    return predicted_period_date
+
+def month_converter(month):
+    """
+    Function that convert the month abbreviation to number
+    
+    Args:
+        month (str): month abbreviation
+
+    Returns:
+        int: month number
+    """
+
+    month_mapping = {
+        'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+        'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
+    }
+    
+
+    return month_mapping.get(month, month)  # If it's already a number, return it as is
+
+
+def calculate_cycle_and_periods(df):
+    """
+    Function that calculate the cycle and periods in format 
+
+    Args:
+        df (pd.DataFrame): dataframe with the data
+
+    Returns:
+        result (list): list with the cycle and periods in format [date, cycle_length, period_length]
+    """
+    
+    df['M'] = pd.DataFrame([month_converter(month) for month in df['M']], columns=['M'])
+    
+
+    dates = [pendulum.date(row['Year'], row['M'], row['Day']) for _, row in df.iterrows()]
+    
+    period_lengths = []
+    cycle_lengths = []
+    
+    # Calculate period lengths (difference between two consecutive dates)
+    for i in range(0, len(dates), 2):
+        period_length = (dates[i + 1] - dates[i]).days + 1
+        period_lengths.append(period_length)
+    
+    # Calculate cycle lengths (difference between the start of the next period and the current one)
+    for i in range(0, len(dates) - 2, 2):
+        cycle_length = (dates[i + 2] - dates[i]).days
+        cycle_lengths.append(cycle_length)
+    
+    result = []
+    for i, date_index in enumerate(range(2, len(dates), 2)):
+        result.append([dates[date_index].to_date_string(), cycle_lengths[i], period_lengths[i]])
+    
+    return result

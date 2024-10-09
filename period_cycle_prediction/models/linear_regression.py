@@ -42,15 +42,17 @@ if __name__ == '__main__':
     output_pred = [[int(round(i[0])), int(round(i[1]))] for i in y_pred] # round the values 
 
     last_know_data_cycle = (data_years)[train_x.shape[0]]
-
+    print('Saída do modelo para predição do próximo ciclo e período: ')
     predict_cycles_periods =  utils.next_period_prediction(last_know_data_cycle, np.array([y_pred]))
-
+    print('Saída esperada para predição do próximo ciclo e período: ')
+    predict_cycles_periods_ =  utils.next_period_prediction(last_know_data_cycle, np.array([y_test]))
     cycle_length=[]
     periods=[]
     for i in range(len(output_pred)):
         cycle_length.append(output_pred[i][0] )
         periods.append(output_pred[i][1] )
 
+ 
     # predição um passo a frente / novo ciclo
     predicao_um_passo_a_frente = model_LR.predict([test_x[-1]])
     cycles_numbers = np.arange(1, len(cycle_length)+1)
@@ -78,6 +80,8 @@ if __name__ == '__main__':
     plt.show()  
 
     dates = [pendulum.parse(item[0]).to_datetime_string() for item in predict_cycles_periods]
+    # plot only the data without the hour
+    dates = [item.split(' ')[0] for item in dates]
     cycle_numbers_ = [item[2] for item in predict_cycles_periods]
     fig, ax = plt.subplots()
     ax.plot(dates, cycle_numbers_, marker='o', linestyle='-', color='b')

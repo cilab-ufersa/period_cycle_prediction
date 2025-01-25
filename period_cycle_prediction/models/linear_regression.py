@@ -12,6 +12,7 @@ from math import sqrt
 import pendulum
 from pendulum import duration
 import matplotlib.dates as mdates 
+from joblib import dump, load
 
 if __name__ == '__main__':
     # Abrir dataset sintético
@@ -37,6 +38,8 @@ if __name__ == '__main__':
     # Modelo de regressão linear
     model_LR= LinearRegression()
     model_LR.fit(train_x, train_y)
+    dump(model_LR, 'linear_regression_model.joblib')
+
     # Fazer a predição
     y_pred = model_LR.predict(test_x)
     output_pred = [[int(round(i[0])), int(round(i[1]))] for i in y_pred] # round the values 

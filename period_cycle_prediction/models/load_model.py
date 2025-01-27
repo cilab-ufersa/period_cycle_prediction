@@ -8,12 +8,6 @@ from joblib import load
 
 
 if __name__ == '__main__':
-
-    # Abrir histórico de dados 
-    df =  pd.read_csv('period_cycle_prediction/dataset/synthetic_data.csv', sep=',', header=0)
-    data_years = utils.calculate_cycle_and_periods(df)
-
-
     # load the model
     model_LR = load('linear_regression_model.joblib')
 
@@ -28,12 +22,11 @@ if __name__ == '__main__':
                                 [26,  5, 29,  6, 26,  5]])
  
     
-    # Fazer a predição
+    # Fazer a predição com os dados dos 6 ultimos ciclos
     y_pred = model_LR.predict(duracao_e_ciclo)
-    output_pred = [[int(round(i[0])), int(round(i[1]))] for i in y_pred] # round the values 
-
-    last_know_data_cycle = (data_years)[23] 
     
+    last_know_data_cycle = ['2025-01-30', 30, 5]
+
     predict_cycles_periods =  utils.next_period_prediction(last_know_data_cycle, np.array([y_pred]))
 
 
